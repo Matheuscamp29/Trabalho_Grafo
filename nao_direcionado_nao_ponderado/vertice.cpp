@@ -1,0 +1,1 @@
+//colocar os metodos do vertice aqui
