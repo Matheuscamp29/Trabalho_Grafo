@@ -61,13 +61,13 @@ class GrafoListaAdj {
         }
 
         void imprimirGrafo() {
-            std::cout << "\nRepresentação do Grafo (Lista de Adjacência):" << std::endl;
+            cout << "\nRepresentação do Grafo (Lista de Adjacência):" << endl;
             for (int i = 0; i < vertice; ++i) {
-                std::cout << "Vértice " << i << ":";
+                cout << "Vértice " << i << ":";
                 for (const auto& par : adjList[i]) {
-                    std::cout << " -> (" << par.first << ", peso: " << par.second << ")";
+                    cout << " -> (" << par.first << ", peso: " << par.second << ")";
                 }
-                std::cout << std::endl;
+                cout << endl;
             }
         }
 
