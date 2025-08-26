@@ -47,30 +47,72 @@ int** gerarGrafo(int n)
     return gerarMatriz(n);
 }
 
-void inserirAresta(int** grafo, int** matrizPeso)
+bool arestaExiste(int** grafo, int u, int v)
 {
+    if (grafo[u][v] == 1 || grafo[v][u] == 1)
+        return true;
+    else
+        return false;
+}
+
+void inserirAresta(int** grafo, int** matrizPeso, int n)
+{
+    bool repetir = false;
     int u, v, peso = 0;
     std::cout << "Digite os valores para a aresta" << std::endl;
-    std::cout << "Vertice 1:" << std::endl;
-    std::cin >> u;
-    std::cout << "Vertice 2:" << std::endl;
-    std::cin >> v;
+    do{
+        repetir = false;
+        std::cout << "Vertice 1:" << std::endl;
+        std::cin >> u;
+        if (u<0 || u>n)
+        {
+            std::cout << "Valor invalido. Tente novamente." << std::endl;
+            repetir = true;
+        }
+    }
+    while(repetir==true);
+    repetir = false;
+    do{
+        repetir = false;
+        std::cout << "Vertice 2:" << std::endl;
+        std::cin >> v;
+        if (u == v)
+        {
+            std::cout << "Nao e permitido criar arestas entre o mesmo vertice. Tente novamente." << std::endl;
+            repetir = true;
+        }
+        else if (arestaExiste(grafo, u-1, v-1))
+        {
+            std::cout << "Aresta ja existente. Tente novamente." << std::endl;
+            repetir = true;
+        }
+        else if (u<0 || u>n)
+        {
+            std::cout << "Valor invalido. Tente novamente." << std::endl;
+            repetir = true;
+        }
+    }
+    while(repetir==true);
     std::cout << "Peso da aresta:" << std::endl;
     std::cin >> peso;
+    u = u-1;
+    v = v-1;
     grafo[u][v] = 1;
     grafo[v][u] = 1;
     matrizPeso[u][v] = peso;
     matrizPeso[v][u] = peso;
 }
 
-void removerAresta(int** grafo, int** matrizPeso)
+void removerAresta(int** grafo, int** matrizPeso, int n)
 {
     int u, v, peso = 0;
     std::cout << "Digite os valores para a aresta" << std::endl;
     std::cout << "Vertice 1:" << std::endl;
     std::cin >> u;
+    u = u-1;
     std::cout << "Vertice 2:" << std::endl;
     std::cin >> v;
+    v = v-1;
     grafo[u][v] = 0;
     grafo[v][u] = 0;
     matrizPeso[u][v] = 0;
@@ -80,14 +122,14 @@ void removerAresta(int** grafo, int** matrizPeso)
 void lerGrafo(int** grafo, int** matrizPeso, int n)
 {
     std::cout << "Numero de vertices: " << n << std::endl;
-    std::cout << "Modelo: (vertice de partida, vertice de chegada, peso da aresta)";
+    std::cout << "Modelo: (vertice 1, vertice 2, peso da aresta)" << std::endl;
     for(int i = 0; i<n; i++)
     {
         for(int j = i; j<n; j++)
         {   
             if(grafo[i][j]==1)
             {
-                std::cout << "(" << i << ", " << j << ", ";
+                std::cout << "(" << i+1 << ", " << j+1 << ", ";
                 std::cout << matrizPeso[i][j] << ")";
             }
         }
@@ -110,10 +152,10 @@ void menu(int n, int** grafo, int** matrizPeso)
         switch (opcao)
         {
         case 1:
-            inserirAresta(grafo, matrizPeso);
+            inserirAresta(grafo, matrizPeso, n);
             break;
         case 2:
-            removerAresta(grafo, matrizPeso);
+            removerAresta(grafo, matrizPeso, n);
             break;
         case 3:
             lerGrafo(grafo, matrizPeso, n);
@@ -132,7 +174,6 @@ int main (){
     int n, u, v, peso = 0;
     std::cout << "Digite o numero de vertices: ";
     std::cin >> n;
-    n = n+1;
 
     int** grafo = gerarGrafo(n);
     int** matrizPeso = gerarMatrizPeso(n);
