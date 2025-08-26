@@ -1,62 +1,99 @@
+/*
+Autores: Henrique Saldanha Mendes Veloso e 
+*/
+
 // Bibliotecas
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
 // Implementação do grafo direcionado e não ponderado
 
-// Começo da classe Grafo
-class Grafo{
+// Começo da classe Vertice
+class Vertice {
 
     private:
-    int nVertices;
-    vector<vector<int>> matriz;
+    vector<int> vizinhos;
 
     public:
-    void criarMatriz(int n) {
-        nVertices = n; 
-        matriz = vector<vector<int>>(nVertices, vector<int>(nVertices, 0));
+    void addAresta(int x) {
+        vizinhos.push_back(x);
+        sort(vizinhos.begin(), vizinhos.end());
+    }
+
+    void removeAresta(int x) {
+        auto temp = find(vizinhos.begin(), vizinhos.end(), x);
+        
+        if(temp != vizinhos.end()) {
+            vizinhos.erase(temp);
+        }
+    }
+
+    void mostrarVizinhos() {
+        for(int i = 0; i < vizinhos.size(); i++) {
+            cout << " " << vizinhos[i];
+        }
+    }
+};
+
+// Começo da classe Grafo
+class Grafo {
+
+    private:
+    vector<Vertice> vertices;
+
+    public:
+    void criarGrafo(int n) {
+        vertices.resize(n);
     }
     
-    void addVertice(int x) {}
+    void addVertice() {
+        vertices.push_back(Vertice());
+    }
     
-    void removeVertice(int x) {}
+    void addAresta(int v, int u) {
+        vertices[v].addAresta(u);
+    }
     
-    void addAresta(int v, int u) {}
-    
-    void removeAresta(int v, int u) {}
+    void removeAresta(int v, int u) {
+        vertices[v].removeAresta(u);
+    }
+
+    int quantidadeVertices() {
+        return vertices.size();
+    }
     
 }; // Fim da classe Grafo
 
 // Começo do main
 int main() {
 
+    // Início do grafo
     cout << "Digite o numero de vértices: " << endl;
     int nVertices;
     cin >> nVertices;
 
     Grafo g;
-    g.criarMatriz(nVertices);
+    g.criarGrafo(nVertices);
 
+    // Menu
+    int x;
     do {
 
         cout << "Menu: " << endl
         << "0 - Parar" << endl
-        << "1 - Adicionar Vértice" << endl
-        << "2 - Adicionar Aresta" << endl
-        << "3 - Remover Vértice" << endl
-        << "4 - Remover Aresta" << endl;
+        << "1 - Adicionar Vertice" << endl
+        << "2 - Adcionar Aresta" << endl
+        << "3 - Remover Aresta" << endl
+        << "4 - Mostrar Vizinhos" << endl
+        << "5 - Mostrar Grafo" << endl; // Função ainda a implementar
 
-        int x;
         cin >> x;
 
         switch(x) {
-        
-            case 0:
-                cout << "Fim do programa!" << endl;
-            break;
             case 1:
 
             break;
@@ -68,6 +105,12 @@ int main() {
             break;
             case 4:
 
+            break;
+            case 5:
+
+            break;
+            case 0:
+                cout << "Fim do programa!" << endl;
             break;
             default:
                 cout << "Digite um número válido" << endl;
