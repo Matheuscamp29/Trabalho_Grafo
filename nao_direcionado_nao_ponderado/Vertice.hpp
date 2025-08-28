@@ -1,8 +1,10 @@
-//classe vertice
-
+#ifndef VERTICE_HPP
+#define VERTICE_HPP
 
 #include <string>
 #include <vector>
+
+class Grafo;
 
 using namespace std;
 
@@ -12,15 +14,18 @@ private:
     vector<Vertice> vizinhos; //guarda os vertices vizinhos
 
 public:
-
-    Vertice(string n) : nome(n){}
+    Vertice(string n) : nome(n) {}
 
     //gets
     string getNome() const { 
         return nome; 
     }
     
-    vector<Vertice> getVizinhos() const {
+    const vector<Vertice>& getVizinhos() const {
+        return vizinhos; 
+    }
+
+    vector<Vertice>& getVizinhos() {
         return vizinhos; 
     }
 
@@ -30,8 +35,11 @@ public:
         nome = n;
     }
     
-    void addVizinho(Vertice v) {
+    void addVizinho(Vertice& v) {
         vizinhos.push_back(v); 
     }
 };
 
+void menuVertice(Grafo& g);
+
+#endif

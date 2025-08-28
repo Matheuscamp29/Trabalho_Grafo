@@ -4,20 +4,21 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "vertice.hpp"
-#include "Grafo.hpp"
-#include "Grafo.cpp"
+#include "Vertice.hpp"    
+#include "Grafo.hpp"      
+#include <algorithm>      
+
 using namespace std;
 
-void menuVertice(Grafo &g) {
+void menuVertice(Grafo& g) {
     int opcao;
     do {
-        cout << "Menu de Vértices do grafo " << g.getNome() << ":" << endl
+        cout << "Menu de Vertices do grafo " << g.getNome() << ":" << endl << endl
         << "0 - Voltar" << endl
-        << "1 - Adicionar vértice" << endl
-        << "2 - Listar vértices" << endl
-        << "3 - Adicionar ligação/aresta (n implementado)" << endl
-        << "3 - Excluir vértice" << endl;
+        << "1 - Adicionar vertice" << endl
+        << "2 - Listar vertices e seus viznhos" << endl
+        << "3 - Adicionar ligacao/aresta" << endl
+        << "4 - Excluir vertice" << endl << endl << endl;
 
         cin >> opcao;
 
@@ -27,74 +28,146 @@ void menuVertice(Grafo &g) {
             break;
             case 1: { //adicionar vertice
                 string nome;
-                cout << "Digite o label do vértice: ";
+                cout << "Digite o label do vertice: ";
                 cin >> nome;
-                Vertice v1(nome);
-                g.addVertice(v1);
-                cout << "Vértice adicionado com sucesso!" << endl;
+                Vertice v(nome);
+                g.addVertice(v);  //adiciona diretamente ao grafo
+                cout << "Vertice adicionado com sucesso!" << endl << endl;
+            }
+            break;
 
-                //perguntar ao usuário se deseja adicionar um vizinho
-                string nomeVizinho;
-                cout << "Deseja adicionar um vizinho pra esse vértice? (s/n): ";
-                char resposta;
-                cin >> resposta;
+            case 2: { //listar vertices
+    vector<Vertice> vertices = g.getVertices();
+    if (vertices.empty()) {
+        cout << "Nao ha vertices no grafo." << endl;
+    } else {
+        cout << "Vertices do grafo " << g.getNome() << ":" << endl;
+        cout << "nome --------------- vizinhos" << endl << endl;
+        for (const auto& vertice : vertices) {
+            cout << "-Vertice " << vertice.getNome() << " -> Vizinhos de " << vertice.getNome() << ": ";
 
-                if (resposta == 's' || resposta == 'S') {
-                    cout << "Digite o nome do vizinho: ";
-                    cin >> nomeVizinho;
+            const vector<Vertice>& vizinhos = vertice.getVizinhos();  //pega os vizinhos do vertice
+            if (vizinhos.empty()) {
+                cout << "Nenhum vizinho." << endl;
+            } else {
+                //mostra os vizinhos
+                for (size_t i = 0; i < vizinhos.size(); ++i) {
+                    cout << vizinhos[i].getNome() << ", "; //mostra o nome do vizinho
+                }
+                cout << endl;
+            }
+        }
+    }
+}
+break;
 
-                    // Buscar o vértice vizinho
-                    for (Vertice& v : g.getVertices()) { //percorre todos os vertices do grafo
-                        if (v.getNome() == nomeVizinho) { 
-                            v1.addVizinho(v); //adiciona o vizinho ao vértice atual
-                            v.addVizinho(v1); //adiciona o vértice atual como vizinho do outro vértice
-                            cout << "Vizinho " << nomeVizinho << " adicionado com sucesso!" << endl;
-                            break;
+            case 3: { //adicionar vizinho a um vertice
+                //listar os vertices
+                vector<Vertice>& vertices = g.getVertices();
+                if (vertices.empty()) {
+                    cout << "Nao ha vertices no grafo." << endl;
+                } else {
+                    cout << "Vertices do grafo " << g.getNome() << ":" << endl;
+                    for (size_t i = 0; i < vertices.size(); ++i) {
+                        cout << i + 1 << ". " << vertices[i].getNome() << endl;  //listar vertices
+                    }
+
+                    //escolher um vertice
+                    int verticeIndex;
+                    cout << "Digite o numero do vertice ao qual voce deseja adicionar um vizinho: ";
+                    cin >> verticeIndex;
+
+                    if (verticeIndex < 1 || verticeIndex > vertices.size()) {
+                        cout << "Indice de vertice invalido!" << endl;
+                        break;
+                    }
+
+                    Vertice& verticeEscolhido = vertices[verticeIndex - 1];  //pega o vertice escolhido
+
+                    //listar os vertices de novo para escolher o vizinho
+                    cout << "Vertices disponíveis para adicionar como vizinho de " << verticeEscolhido.getNome() << ":" << endl;
+                    for (size_t i = 0; i < vertices.size(); ++i) {
+                        if (vertices[i].getNome() != verticeEscolhido.getNome()) {
+                            cout << i + 1 << ". " << vertices[i].getNome() << endl;
                         }
                     }
-                }
-                            
 
+                    //escolher o vizinho
+                    int vizinhoIndex;
+                    cout << "Digite o numero do vertice vizinho a ser adicionado: ";
+                    cin >> vizinhoIndex;
 
-            }
-            break;
-            case 2: { //listar vertices
-                vector<Vertice> vertices = g.getVertices();
-                if (vertices.empty()) {
-                    cout << "Não há vértices no grafo." << endl;
-                } else {
-                    cout << "Vértices do grafo " << g.getNome() << ":" << endl;
-                    for (const auto& vertice : vertices) {
-                        cout << "- " << vertice.getNome() << endl;
+                    if (vizinhoIndex < 1 || vizinhoIndex > vertices.size() || vizinhoIndex == verticeIndex) {
+                        cout << "Indice de vizinho invalido!" << endl;
+                        break;
                     }
+
+                    Vertice& vizinhoEscolhido = vertices[vizinhoIndex - 1];  //pega o vizinho escolhido
+
+                    //adiciona o vizinho aos dois vertices (pq é grafo nao direcionado)
+                    verticeEscolhido.addVizinho(vizinhoEscolhido);
+                    vizinhoEscolhido.addVizinho(verticeEscolhido);
+
+                    cout << "Vizinho " << vizinhoEscolhido.getNome() << " adicionado com sucesso a " << verticeEscolhido.getNome() << "!" << endl;
                 }
             }
-            break;
-            case 3: { 
-
-                
-            }
-                
+                            
 
             break;
             case 4: { //excluir vertice
-                string label;
-                cout << "Digite o label do vértice a ser excluído: ";
-                cin >> label;
+               //listar todos os vertices
                 vector<Vertice>& vertices = g.getVertices();
-                auto it = find_if(vertices.begin(), vertices.end(), [&label](const Vertice& v) {
-                    return v.getNome() == label;
-                });
-                if (it != vertices.end()) {
-                    vertices.erase(it);
-                    cout << "Vértice excluído com sucesso!" << endl;
-                } else {
-                    cout << "Vértice não encontrado!" << endl;
+                if (vertices.empty()) {
+                    cout << "Nao há vertices no grafo." << endl;
+                    break;
                 }
-            }
+
+                //mostrar a lista de vertices
+                cout << "Vertices do grafo " << g.getNome() << ":" << endl;
+                for (size_t i = 0; i < vertices.size(); ++i) {
+                    cout << i + 1 << ". " << vertices[i].getNome() << endl;
+                }
+
+                //qual vertice excluir
+                int verticeIndex;
+                cout << "Digite o numero do vertice a ser excluido: ";
+                cin >> verticeIndex;
+
+                if (verticeIndex < 1 || verticeIndex > vertices.size()) {
+                    cout << "Indice de vertice invalido!" << endl;
+                    break;
+                }
+
+                //pega o vertice a ser excluido
+                Vertice& verticeExcluir = vertices[verticeIndex - 1];
+
+                //remover esse vertice da lista de vizinhos de todos os outros vertices
+                for (Vertice& v : vertices) {
+                    if (v.getNome() != verticeExcluir.getNome()) {
+                        //obter o vetor de vizinhos do vertice 'v'
+                        vector<Vertice>& vizinhos = v.getVizinhos();
+
+                        //encontrar o vertice a ser removido da lista de vizinhos
+                        auto it = find_if(vizinhos.begin(), vizinhos.end(), [&verticeExcluir](const Vertice& vizinho) {
+                            return vizinho.getNome() == verticeExcluir.getNome();
+                        });
+
+                        //se encontrar remove o vertice da lista de vizinhos
+                        if (it != vizinhos.end()) {
+                            vizinhos.erase(it);  //remove o vertice da lista de vizinhos
+                        }
+                    }
+                }
+
+                //exclui o vertice da lista de vertices do grafo
+                vertices.erase(vertices.begin() + (verticeIndex - 1));  //remove o vertice da lista de vertices
+
+                cout << "Vertice " << verticeExcluir.getNome() << " excluido com sucesso!" << endl << endl;
+            }   
             break;
+
             default:
-                cout << "Opção inválida. Tente novamente." << endl;
+                cout << "Opcao invalida. Tente novamente." << endl;
         }
     } while (opcao != 0);
 }

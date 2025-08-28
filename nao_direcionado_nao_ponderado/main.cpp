@@ -1,24 +1,30 @@
 //main
 
+/*
+2025/2
+Aluno: Matheus de Oliveira Campello
+Professor: Silvio Jamil Ferzoli Guimaraes
+*/
+
+
+/*
+Compilar: g++ main.cpp grafo.cpp vertice.cpp -o programa
+Executar: ./programa
+*/
 #include <iostream>
 #include <vector>
 #include <string>
-#include "vertice.hpp"
-#include "Grafo.hpp"
-#include "vertice.cpp"
-#include "Grafo.cpp"
-
+#include "Grafo.hpp"    
+#include "Vertice.hpp" 
 
 using namespace std;
-
-vector<Grafo> grafos; //guarda todos os grafos criados
 
 int main() {
 
     int opcao;
     do {
         //começar pelo menu de grafo
-        cout << "Menu: " << endl
+        cout << "Menu: " << endl << endl
         << "0 - Parar" << endl
         << "1 - Adicionar grafo" << endl
         << "2 - Editar grafo existente" << endl
@@ -39,20 +45,13 @@ int main() {
 
                 listarGrafos();//mostra os grafos existentes para o usuario escolher um 
                 
-                int indice;
-                cin >> indice;
+                int indi;
+                cin >> indi;
                 
-                if (indice >= 1 && indice <= grafos.size()) {
-                    cout << "Você escolheu o grafo: " << grafos[indice - 1].getNome() << endl;
-                } else {
-                    cout << "Grafo inválido!" << endl;
-                    break; //sai do switch se o índice for inválido
-                }
-
-                menuVertice(grafos[indice - 1]); //entra no menu para editar os vertices do grafo escolhido
+                menu2(indi - 1); //entra no menu para editar os vertices do grafo escolhido
             break;
             case 3://excluir grafo
-                 cout << "Escolhe um grafo!" << endl;
+                 cout << "Escolhe um grafo para excluir!" << endl;
 
                 listarGrafos();
                 int indice;
@@ -60,11 +59,8 @@ int main() {
 
                 excluirGrafo(indice);
             break;
-            case 4:
-                
-            break;
             default:
-                cout << "Digite um número válido" << endl;
+                cout << "Digite um numero valido" << endl;
             break;
         }
 

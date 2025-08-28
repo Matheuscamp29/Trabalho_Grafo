@@ -1,5 +1,6 @@
 //classe do grafo
-
+#ifndef GRAFO_HPP
+#define GRAFO_HPP
 
 #include <string>
 #include <vector>
@@ -21,7 +22,7 @@ public:
         return nome; 
     }
     vector<Vertice>& getVertices() { 
-    return vertices; 
+        return vertices; 
     }
 
 
@@ -33,4 +34,10 @@ public:
     void addVertice(Vertice v) {
         vertices.push_back(v); 
     }
-};
+
+}; 
+    void criar_grafo();  
+    void listarGrafos();  
+    void excluirGrafo(int indice);  
+    void menu2(int indice);  
+#endif 
