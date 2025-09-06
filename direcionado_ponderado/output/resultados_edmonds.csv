@@ -1,0 +1,13 @@
+Tipo,V,E,Algoritmo,Representacao,Tempo (us),Peso
+Esparso,50,100,Edmonds,Lista,182,1732
+Esparso,50,100,Edmonds,Matriz,215,1732
+Denso,50,625,Edmonds,Lista,1442,521
+Denso,50,625,Edmonds,Matriz,1386,521
+Esparso,100,200,Edmonds,Lista,66,3053
+Esparso,100,200,Edmonds,Matriz,130,3053
+Denso,100,2500,Edmonds,Lista,14652,401
+Denso,100,2500,Edmonds,Matriz,13761,401
+Esparso,150,300,Edmonds,Lista,413,5005
+Esparso,150,300,Edmonds,Matriz,585,5005
+Denso,150,5625,Edmonds,Lista,52235,409
+Denso,150,5625,Edmonds,Matriz,43825,409

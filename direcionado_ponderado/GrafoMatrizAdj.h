@@ -1,3 +1,6 @@
+#ifndef GRAFOMATRIZADJ_H
+#define GRAFOMATRIZADJ_H
+
 #include <iostream>
 #include <vector>
 #include <iomanip>
@@ -35,6 +38,10 @@ public:
     int getNumVertices() const
     {
         return vertice;
+    }
+
+    const vector<vector<int>>& getAdjMatrix() const {
+        return adjMatrix;
     }
 
     void adicionarVertice()
@@ -168,3 +175,5 @@ public:
         cout << endl;
     }
 };
+
+#endif

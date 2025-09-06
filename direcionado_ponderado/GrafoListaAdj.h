@@ -1,3 +1,6 @@
+#ifndef GRAFOLISTAADJ_H
+#define GRAFOLISTAADJ_H
+
 #include <iostream>
 #include <vector>
 #include <list>
@@ -155,4 +158,10 @@ public:
         dfsUtil(v, visitado);
         cout << endl;
     }
+
+    const vector<list<pair<int, int>>>& getAdjList() const {
+        return adjList;
+    }
 };
+
+#endif
