@@ -18,7 +18,8 @@ void menuVertice(Grafo& g) {
         << "1 - Adicionar vertice" << endl
         << "2 - Listar vertices e seus viznhos" << endl
         << "3 - Adicionar ligacao/aresta" << endl
-        << "4 - Excluir vertice" << endl << endl << endl;
+        << "4 - Excluir vertice" << endl
+        << "5 - Adicionar 50 vertices automaticamente" << endl << endl;
 
         cin >> opcao;
 
@@ -77,7 +78,7 @@ break;
                     cout << "Digite o numero do vertice ao qual voce deseja adicionar um vizinho: ";
                     cin >> verticeIndex;
 
-                    if (verticeIndex < 1 || verticeIndex > vertices.size()) {
+                    if (verticeIndex < 1 || verticeIndex > static_cast<int>(vertices.size())) {
                         cout << "Indice de vertice invalido!" << endl;
                         break;
                     }
@@ -97,7 +98,8 @@ break;
                     cout << "Digite o numero do vertice vizinho a ser adicionado: ";
                     cin >> vizinhoIndex;
 
-                    if (vizinhoIndex < 1 || vizinhoIndex > vertices.size() || vizinhoIndex == verticeIndex) {
+                    if (vizinhoIndex < 1 || vizinhoIndex > static_cast<int>(vertices.size()) || vizinhoIndex == verticeIndex) {
+
                         cout << "Indice de vizinho invalido!" << endl;
                         break;
                     }
@@ -133,7 +135,7 @@ break;
                 cout << "Digite o numero do vertice a ser excluido: ";
                 cin >> verticeIndex;
 
-                if (verticeIndex < 1 || verticeIndex > vertices.size()) {
+                if (verticeIndex < 1 || verticeIndex > static_cast<int>(vertices.size())) {
                     cout << "Indice de vertice invalido!" << endl;
                     break;
                 }
@@ -165,6 +167,15 @@ break;
                 cout << "Vertice " << verticeExcluir.getNome() << " excluido com sucesso!" << endl << endl;
             }   
             break;
+            case 5: { //adicionar 50 vertices automaticamente
+                for (int i = 1; i <= 50; ++i) {
+                    string nome = "V" + to_string(i);
+                    Vertice v(nome);
+                    g.addVertice(v);  //adiciona diretamente ao grafo
+                }
+                cout << "50 vertices adicionados com sucesso!" << endl << endl;
+                break;
+            }
 
             default:
                 cout << "Opcao invalida. Tente novamente." << endl;

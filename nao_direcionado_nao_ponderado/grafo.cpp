@@ -11,7 +11,6 @@ vector<Grafo> grafos; //guarda todos os grafos criados
 
 void criar_grafo() {
     string nome;
-    int id;
 
     cout << "Digite o nome do grafo: ";
     cin >> nome;
@@ -28,7 +27,7 @@ void listarGrafos() {
     }
 
     cout << "Grafos existentes: " << endl;
-    for (int i = 0; i < grafos.size(); i++) {
+    for (std::size_t i = 0; i < grafos.size(); ++i) {
         cout << i + 1 << ". " << grafos[i].getNome() << endl;  //exibe o nome de cada grafo
     }
 }
